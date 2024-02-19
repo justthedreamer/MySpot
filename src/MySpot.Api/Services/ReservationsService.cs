@@ -5,8 +5,9 @@ using MySpot.Api.Exceptions;
 
 namespace MySpot.Api.Services;
 
-public class ReservationsService
+public class ReservationsService(IClock _clock)
 {
+    
     private static readonly List<WeeklyParkingSpot> WeeklyParkingSpots = 
         [
             new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000001"), DateTime.UtcNow, DateTime.UtcNow.AddDays(7),"P1"),
@@ -36,7 +37,7 @@ public class ReservationsService
 
         var reservation = new Reservation(command.ReservationId, command.ParkingSpotId, command.EmployeeName,command.LicensePlate,command.Date);
         
-        weeklyParkingSpot.AddReservation(reservation);
+        weeklyParkingSpot.AddReservation(reservation,_clock.Current());
         
         return command.ReservationId;
     }
