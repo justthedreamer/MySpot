@@ -3,7 +3,7 @@ using MySpot.Api.Models;
 
 namespace MySpot.Api.Controllers;
 
-[Route("[controller]")]
+[Route("reservations")]
 public class ReservationsController : ControllerBase
 {
     [HttpGet]
@@ -13,7 +13,7 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpPost]
-    public void Post(Reservation reservation)
+    public void Post([FromBody]Reservation reservation)
     {
         
     }
