@@ -12,9 +12,9 @@ public class WeeklyParkingSpot(Guid id, DateTime from, DateTime to, string name)
     public string Name { get;} = name;
     public IEnumerable<Reservation> Reservations => _reservations;
 
-    public void AddReservation(Reservation reservation)
+    public void AddReservation(Reservation reservation, DateTime now)
     {
-        var isReservationDateValid = reservation.Date.Date  >= From && reservation.Date <= To;
+        var isReservationDateValid = reservation.Date.Date  >= From && reservation.Date <= To && reservation.Date.Date > now;
 
         if (!isReservationDateValid)
         {
