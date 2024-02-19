@@ -25,7 +25,7 @@ public class ReservationsService(IClock _clock)
         Id = x.Id,
         ParkingSpotId = x.ParkingSpotId,
         LicensePlate = x.LicencePlate.Value,
-        Date = x.Date
+        Date = x.Date.Value.Date
     });
 
     public Guid? Create(CreateReservation command)
@@ -38,14 +38,14 @@ public class ReservationsService(IClock _clock)
 
         var reservation = new Reservation(command.ReservationId, command.ParkingSpotId, command.EmployeeName,command.LicensePlate,command.Date);
         
-        weeklyParkingSpot.AddReservation(reservation,_clock.Current());
+        weeklyParkingSpot.AddReservation(reservation,new Date(_clock.Current()));
         
         return command.ReservationId;
     }
 
     public bool UpdateLicensePlate(UpdateLicensePlate command)
     {
-        var existingReservation = WeeklyParkingSpots.SelectMany(x => x.Reservations).SingleOrDefault(x => x.Id == command.ReservationId);
+        var existingReservation = WeeklyParkingSpots.SelectMany(x => x.Reservations).SingleOrDefault(x => x.Id.Value == command.ReservationId);
 
         if (existingReservation is null)
         {
@@ -58,7 +58,7 @@ public class ReservationsService(IClock _clock)
 
     public bool DeleteReservation(CancelReservation command)
     {
-        var existingReservation = WeeklyParkingSpots.SelectMany(x => x.Reservations).SingleOrDefault(x => x.Id == command.ReservationId);
+        var existingReservation = WeeklyParkingSpots.SelectMany(x => x.Reservations).SingleOrDefault(x => x.Id.Value == command.ReservationId);
   
         if (existingReservation is null) return false;
 
@@ -69,5 +69,5 @@ public class ReservationsService(IClock _clock)
         return true;
     }
     
-    private WeeklyParkingSpot GetWeeklyParkingSpotByReservation(Guid reservationId) => WeeklyParkingSpots.SingleOrDefault(x => x.Reservations.Any(reservation => reservation.Id == reservationId));
+    private WeeklyParkingSpot GetWeeklyParkingSpotByReservation(Guid reservationId) => WeeklyParkingSpots.SingleOrDefault(x => x.Reservations.Any(reservation => reservation.Id.Value == reservationId));
 }
