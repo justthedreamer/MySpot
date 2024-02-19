@@ -488,3 +488,7 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,rider,dotnetcore
+.idea/.idea.MySpot/.idea/encodings.xml
+.idea/.idea.MySpot/.idea/indexLayout.xml
+.idea/.idea.MySpot/.idea/vcs.xml
+.idea
