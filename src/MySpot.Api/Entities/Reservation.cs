@@ -2,20 +2,13 @@ using MySpot.Api.Exceptions;
 
 namespace MySpot.Api.Entities;
 
-public class Reservation
+public class Reservation(Guid id, Guid parkingSpotId, string employeeName, string licensePlate, DateTime date)
 {
-    public int Id { get; }
-    public string EmployeeName { get; private set; }
-    public string LicensePlate { get; private set; }
-    public DateTime Date { get; private set; }
-
-    public Reservation(int id, string employeeName, string licensePlate, DateTime date)
-    {
-        Id = id;
-        EmployeeName = employeeName;
-        LicensePlate = licensePlate;
-        Date = date;
-    }
+    public Guid Id { get; } = id;
+    public Guid ParkingSpotId { get; set; } = parkingSpotId;
+    public string EmployeeName { get; private set; } = employeeName;
+    public string LicensePlate { get; private set; } = licensePlate;
+    public DateTime Date { get; private set; } = date;
 
     public void ChangeLicensePlate(string licensePlate)
     {
