@@ -12,9 +12,9 @@ public class ReservationsController : ControllerBase
 {
     private readonly ReservationsService _reservationsService;
 
-    public ReservationsController()
+    public ReservationsController(ReservationsService reservationsService)
     {
-        _reservationsService = new ReservationsService();
+        _reservationsService = reservationsService;
     }
 
     [HttpGet]
