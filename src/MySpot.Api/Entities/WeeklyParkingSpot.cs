@@ -3,12 +3,12 @@ using MySpot.Api.ValueObjects;
 
 namespace MySpot.Api.Entities;
 
-public class WeeklyParkingSpot(Guid id, DateTime from, DateTime to, string name)
+public class WeeklyParkingSpot(Guid id, Week week, string name)
 {
     private readonly HashSet<Reservation> _reservations = [];
     
     public Guid Id { get; } = id;
-    public Week Week { get; set; }
+    public Week Week { get; } = week;
     public string Name { get;} = name;
     public IEnumerable<Reservation> Reservations => _reservations;
 
