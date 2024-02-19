@@ -2,6 +2,7 @@ using MySpot.Api.Commands;
 using MySpot.Api.DTO;
 using MySpot.Api.Entities;
 using MySpot.Api.Exceptions;
+using MySpot.Api.ValueObjects;
 
 namespace MySpot.Api.Services;
 
@@ -23,7 +24,7 @@ public class ReservationsService(IClock _clock)
     {
         Id = x.Id,
         ParkingSpotId = x.ParkingSpotId,
-        LicensePlate = x.LicensePlate,
+        LicensePlate = x.LicencePlate.Value,
         Date = x.Date
     });
 
