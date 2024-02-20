@@ -10,7 +10,7 @@ public sealed record Date
     }
     
     public Date AddDays(int days) => new(Value.AddDays(days));
-    
+
     public static implicit operator DateTimeOffset(Date date)
         => date.Value;
     
