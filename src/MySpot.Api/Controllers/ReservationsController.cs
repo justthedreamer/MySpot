@@ -20,7 +20,7 @@ public class ReservationsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ReservationDto>>> Get()
     {
-        var reservations = await _reservationsService.GetAllWeekly();
+        var reservations = await _reservationsService.GetAllWeeklyAsync();
         return Ok(reservations);
     }
 
@@ -28,7 +28,7 @@ public class ReservationsController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task <ActionResult<Reservation>> Get(Guid id)
     {
-        var reservation = await _reservationsService.Get(id);
+        var reservation = await _reservationsService.GetAsync(id);
         
         if (reservation is null)
         {
@@ -42,7 +42,7 @@ public class ReservationsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Reservation>> Post(CreateReservation command)
     {
-        var createdReservationId = await _reservationsService.Create(command with{ReservationId = Guid.NewGuid()});
+        var createdReservationId = await _reservationsService.CreateAsync(command with{ReservationId = Guid.NewGuid()});
 
         if (createdReservationId is null)
         {
@@ -56,7 +56,7 @@ public class ReservationsController : ControllerBase
     [HttpPut("{id:guid}")]
     public async Task<ActionResult> Put(Guid id,UpdateLicensePlate command)
     {
-        var result = await _reservationsService.UpdateLicensePlate(command with {ReservationId = id});
+        var result = await _reservationsService.UpdateLicensePlateAsync(command with {ReservationId = id});
 
         if (!result) return NotFound();
 
@@ -66,7 +66,7 @@ public class ReservationsController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> Delete(Guid id)
     {
-        var result = await _reservationsService.DeleteReservation(new CancelReservation(id));
+        var result = await _reservationsService.DeleteReservationAsync(new CancelReservation(id));
         if (!result) return NotFound();
         
         return NoContent();

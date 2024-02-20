@@ -14,11 +14,11 @@ public class ReservationServiceTests
     public void given_reservation_for_not_taken_date_create_reservation_should_succeed()
     {
         // ARRANGE todo
-        var parkingSpot = _weeklyParkingSpotRepository.GetAll().Result.First();
+        var parkingSpot = _weeklyParkingSpotRepository.GetAllAsync().Result.First();
         var command = new CreateReservation(parkingSpot.Id,Guid.NewGuid(),
             "John Doe", "XYZ123", DateTime.UtcNow.AddMinutes(5));
         // ACT
-        var reservationId = _reservationsService.Create(command);
+        var reservationId = _reservationsService.CreateAsync(command);
         
         // ASSERT
         reservationId.ShouldNotBeNull();

@@ -7,26 +7,28 @@ namespace MySpot.Infrastructure.DAL.Repositories;
 
 internal class PostgresWeeklyParkingSpotRepository(MySpotDbContext dbContext) : IWeeklyParkingSpotRepository
 {
-    public async Task<List<WeeklyParkingSpot>> GetAll() => await dbContext.WeeklyParkingSpots
+    public async  Task<IEnumerable<WeeklyParkingSpot>> GetAllAsync() => 
+        await dbContext.WeeklyParkingSpots
         .Include(x => x.Reservations)
         .ToListAsync();
 
-    public WeeklyParkingSpot? GetById(ParkingSpotId id) => dbContext.WeeklyParkingSpots
-        .Include(x => x.Reservations)
-        .SingleOrDefault(x => x.Id == id);
+    public async Task<WeeklyParkingSpot?> GetAsync(ParkingSpotId id) =>
+        await dbContext.WeeklyParkingSpots
+            .Include(x => x.Reservations)
+            .SingleOrDefaultAsync(x => x.Id == id);
 
-    public async Task Add(WeeklyParkingSpot weeklyParkingSpot)
+    public async Task AddAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
         await dbContext.AddAsync(weeklyParkingSpot);
         await Commit();
     }
-    public async Task Update(WeeklyParkingSpot weeklyParkingSpot)
+    public async Task UpdateAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
         dbContext.Update(weeklyParkingSpot);
         await Commit();
     }
 
-    public async Task Delete(WeeklyParkingSpot weeklyParkingSpot)
+    public async Task DeleteAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
         dbContext.Remove(weeklyParkingSpot);
         await Commit();

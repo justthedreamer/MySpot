@@ -8,9 +8,9 @@ namespace MySpot.Application.Services;
 public interface IReservationService
 {
 
-    public Task<ReservationDto?> Get(ReservationId id);
-    public Task<IEnumerable<ReservationDto>> GetAllWeekly();
-    public Task<Guid?> Create(CreateReservation command);
-    public Task<bool> UpdateLicensePlate(UpdateLicensePlate command);
-    public Task<bool> DeleteReservation(CancelReservation command);
+    Task<ReservationDto?> GetAsync(ReservationId id);
+    Task<IEnumerable<ReservationDto>> GetAllWeeklyAsync();
+    Task<Guid?> CreateAsync(CreateReservation command);
+    Task<bool> UpdateLicensePlateAsync(UpdateLicensePlate command);
+    Task<bool> DeleteReservationAsync(CancelReservation command);
 }

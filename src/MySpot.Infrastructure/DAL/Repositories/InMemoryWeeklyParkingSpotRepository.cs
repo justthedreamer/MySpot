@@ -18,17 +18,25 @@ internal class InMemoryWeeklyParkingSpotRepository(IClock clock) : IWeeklyParkin
         new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000005"),new Week(clock.Current()), "P1"),
     ];
 
-    public async Task<List<WeeklyParkingSpot>> GetAll() => _weeklyParkingSpots;
+    public Task<IEnumerable<WeeklyParkingSpot>> GetAllAsync() => Task.FromResult(_weeklyParkingSpots.AsEnumerable());
 
-    public WeeklyParkingSpot? GetById(ParkingSpotId id) => _weeklyParkingSpots.SingleOrDefault(x => x.Id == id);
+    public Task<WeeklyParkingSpot?> GetAsync(ParkingSpotId id) =>
+        Task.FromResult(_weeklyParkingSpots.SingleOrDefault(x => x.Id == id));
 
-    public async Task Add(WeeklyParkingSpot weeklyParkingSpot) => _weeklyParkingSpots.Add(weeklyParkingSpot);
-
-    public async Task Update(WeeklyParkingSpot weeklyParkingSpot){} 
-
-    public async Task Delete(WeeklyParkingSpot weeklyParkingSpot) => _weeklyParkingSpots.Remove(weeklyParkingSpot);
-
-    public async Task Commit()
+    public Task AddAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
+        _weeklyParkingSpots.Add(weeklyParkingSpot);
+        return Task.CompletedTask;
     }
+
+    public Task UpdateAsync(WeeklyParkingSpot weeklyParkingSpot) => Task.CompletedTask;
+
+    public Task DeleteAsync(WeeklyParkingSpot weeklyParkingSpot)
+    {
+        _weeklyParkingSpots.Remove(weeklyParkingSpot);
+        return Task.CompletedTask;
+    }
+    
+
+    public Task Commit() => Task.CompletedTask;
 }
