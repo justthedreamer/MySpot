@@ -17,11 +17,11 @@ public class WeeklyParkingSpot(Guid id, Week week, string name)
         var isReservationDateValid = 
             reservation.Date  >= Week.From && 
             reservation.Date <= Week.To && 
-            reservation.Date > now;
+            !(reservation.Date < now);
 
         if (!isReservationDateValid)
         {
-            throw new InvalidReservationDateException($"Invalid reservation date. It should be between ${Week.From:d} and {Week.To:d}");
+            throw new InvalidReservationDateException($"Invalid reservation date. It should be between ${Week.From} and {Week.To}. But is {reservation.Date}");
         }
 
         var reservationAlreadyExist = _reservations.Any(x => x.Date == reservation.Date);
