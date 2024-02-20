@@ -3,7 +3,7 @@ using MySpot.Api.ValueObjects;
 
 namespace MySpot.Api.Entities;
 
-public class Reservation(Guid id, Guid parkingSpotId, string employeeName, string licensePlate, DateTimeOffset date)
+public class Reservation(Guid id, Guid parkingSpotId, string employeeName, string licensePlate, Date date)
 {
     public ReservationId Id { get; } = id;
     public ParkingSpotId ParkingSpotId { get; set; } = parkingSpotId;
