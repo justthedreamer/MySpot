@@ -8,12 +8,12 @@ namespace MySpot.Infrastructure.DAL;
 
 internal static class Extensions
 {
-    private const string sectionName = "postgres";
+    private const string SectionName = "postgres";
     
     public static IServiceCollection AddPostgres(this IServiceCollection services,IConfiguration configuration)
     {
 
-        var options = GetOptions<PostgresOptions>(configuration,sectionName);
+        var options = GetOptions<PostgresOptions>(configuration,SectionName);
         
         
         services.AddDbContext<MySpotDbContext>(x => 
