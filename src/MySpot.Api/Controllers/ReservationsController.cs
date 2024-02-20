@@ -10,9 +10,9 @@ namespace MySpot.Api.Controllers;
 [Route("reservations")]
 public class ReservationsController : ControllerBase
 {
-    private readonly ReservationsService _reservationsService;
+    private readonly IReservationService _reservationsService;
 
-    public ReservationsController(ReservationsService reservationsService)
+    public ReservationsController(IReservationService reservationsService)
     {
         _reservationsService = reservationsService;
     }
