@@ -18,13 +18,17 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ReservationDto>> Get() => Ok(_reservationsService.GetAllWeekly());
+    public async Task<ActionResult<IEnumerable<ReservationDto>>> Get()
+    {
+        var reservations = await _reservationsService.GetAllWeekly();
+        return Ok(reservations);
+    }
 
 
     [HttpGet("{id:guid}")]
-    public ActionResult<Reservation> Get(Guid id)
+    public async Task <ActionResult<Reservation>> Get(Guid id)
     {
-        var reservation = _reservationsService.Get(id);
+        var reservation = await _reservationsService.Get(id);
         
         if (reservation is null)
         {
@@ -36,9 +40,9 @@ public class ReservationsController : ControllerBase
     
     //CREATE
     [HttpPost]
-    public ActionResult<Reservation> Post(CreateReservation command)
+    public async Task<ActionResult<Reservation>> Post(CreateReservation command)
     {
-        var createdReservationId = _reservationsService.Create(command with{ReservationId = Guid.NewGuid()});
+        var createdReservationId = await _reservationsService.Create(command with{ReservationId = Guid.NewGuid()});
 
         if (createdReservationId is null)
         {
@@ -50,9 +54,9 @@ public class ReservationsController : ControllerBase
 
     //UPDATE LICENSE PLATE
     [HttpPut("{id:guid}")]
-    public ActionResult Put(Guid id,UpdateLicensePlate command)
+    public async Task<ActionResult> Put(Guid id,UpdateLicensePlate command)
     {
-        var result = _reservationsService.UpdateLicensePlate(command with {ReservationId = id});
+        var result = await _reservationsService.UpdateLicensePlate(command with {ReservationId = id});
 
         if (!result) return NotFound();
 
@@ -60,9 +64,9 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public ActionResult Delete(Guid id)
+    public async Task<ActionResult> Delete(Guid id)
     {
-        var result = _reservationsService.DeleteReservation(new CancelReservation(id));
+        var result = await _reservationsService.DeleteReservation(new CancelReservation(id));
         if (!result) return NotFound();
         
         return NoContent();

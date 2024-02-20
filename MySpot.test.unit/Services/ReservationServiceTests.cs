@@ -1,7 +1,7 @@
-using MySpot.Api.Repositories;
 using MySpot.Application.Commands;
 using MySpot.Application.Services;
 using MySpot.Core.Repositories;
+using MySpot.Infrastructure.DAL.Repositories;
 using MySpot.test.unit.Shared;
 using Shouldly;
 using Xunit;
@@ -13,8 +13,8 @@ public class ReservationServiceTests
     [Fact]
     public void given_reservation_for_not_taken_date_create_reservation_should_succeed()
     {
-        // ARRANGE
-        var parkingSpot = _weeklyParkingSpotRepository.GetAll().First();
+        // ARRANGE todo
+        var parkingSpot = _weeklyParkingSpotRepository.GetAll().Result.First();
         var command = new CreateReservation(parkingSpot.Id,Guid.NewGuid(),
             "John Doe", "XYZ123", DateTime.UtcNow.AddMinutes(5));
         // ACT
@@ -22,7 +22,7 @@ public class ReservationServiceTests
         
         // ASSERT
         reservationId.ShouldNotBeNull();
-        reservationId.Value.ShouldBe(command.ReservationId);
+        reservationId.Result.Value.ShouldBe(command.ReservationId);
     }
 
     #region Arrange
