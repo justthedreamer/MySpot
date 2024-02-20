@@ -8,16 +8,29 @@ namespace MySpot.Infrastructure.DAL;
 
 internal static class Extensions
 {
+    private const string sectionName = "postgres";
+    
     public static IServiceCollection AddPostgres(this IServiceCollection services,IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("postgres");
+
+        var options = GetOptions<PostgresOptions>(configuration,sectionName);
         
-        services.AddDbContext<MySpotDbContext>(options => 
-                options.UseNpgsql(connectionString)
+        
+        services.AddDbContext<MySpotDbContext>(x => 
+                x.UseNpgsql(options.ConnectionString)
             )
             .AddScoped<IWeeklyParkingSpotRepository,PostgresWeeklyParkingSpotRepository>();
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior",true);
         
         return services;
+    }
+
+    private static T GetOptions<T>(this IConfiguration configuration, string sectionName) where T : class, new()
+    {
+        var options = new T();
+        var section = configuration.GetSection(sectionName);
+        section.Bind(options);
+
+        return options;
     }
 }
