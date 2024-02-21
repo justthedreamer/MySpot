@@ -8,19 +8,12 @@ namespace MySpot.Api.Controllers;
 
 [ApiController]
 [Route("reservations")]
-public class ReservationsController : ControllerBase
+public class ReservationsController(IReservationService reservationsService) : ControllerBase
 {
-    private readonly IReservationService _reservationsService;
-
-    public ReservationsController(IReservationService reservationsService)
-    {
-        _reservationsService = reservationsService;
-    }
-
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ReservationDto>>> Get()
     {
-        var reservations = await _reservationsService.GetAllWeeklyAsync();
+        var reservations = await reservationsService.GetAllWeeklyAsync();
         return Ok(reservations);
     }
 
@@ -28,7 +21,7 @@ public class ReservationsController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task <ActionResult<Reservation>> Get(Guid id)
     {
-        var reservation = await _reservationsService.GetAsync(id);
+        var reservation = await reservationsService.GetAsync(id);
         
         if (reservation is null)
         {
@@ -42,7 +35,7 @@ public class ReservationsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Reservation>> Post(CreateReservation command)
     {
-        var createdReservationId = await _reservationsService.CreateAsync(command with{ReservationId = Guid.NewGuid()});
+        var createdReservationId = await reservationsService.CreateAsync(command with{ReservationId = Guid.NewGuid()});
 
         if (createdReservationId is null)
         {
@@ -56,7 +49,7 @@ public class ReservationsController : ControllerBase
     [HttpPut("{id:guid}")]
     public async Task<ActionResult> Put(Guid id,UpdateLicensePlate command)
     {
-        var result = await _reservationsService.UpdateLicensePlateAsync(command with {ReservationId = id});
+        var result = await reservationsService.UpdateLicensePlateAsync(command with {ReservationId = id});
 
         if (!result) return NotFound();
 
@@ -66,7 +59,8 @@ public class ReservationsController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> Delete(Guid id)
     {
-        var result = await _reservationsService.DeleteReservationAsync(new CancelReservation(id));
+        var result = await reservationsService.DeleteReservationAsync(new CancelReservation(id));
+        
         if (!result) return NotFound();
         
         return NoContent();
