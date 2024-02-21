@@ -12,11 +12,10 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddControllers();
 
-builder.Services.AddSingleton<IClock, Clock>();
-
 var app = builder.Build();
 
 app.UseInfrastructure();
 
 app.MapControllers();
+
 app.Run();
