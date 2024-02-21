@@ -31,11 +31,11 @@ public class ReservationsController(IReservationService reservationsService) : C
         return Ok(reservation);
     }
     
-    //CREATE
-    [HttpPost]
-    public async Task<ActionResult<Reservation>> Post(CreateReservation command)
+    //CREATE - VEHICLE
+    [HttpPost("vehicle")]
+    public async Task<ActionResult<Reservation>> Post(ReserveParkingSpotForVehicle command)
     {
-        var createdReservationId = await reservationsService.CreateAsync(command with{ReservationId = Guid.NewGuid()});
+        var createdReservationId = await reservationsService.ReserveForVehicleAsync(command with{ReservationId = Guid.NewGuid()});
 
         if (createdReservationId is null)
         {
@@ -45,6 +45,14 @@ public class ReservationsController(IReservationService reservationsService) : C
         return CreatedAtAction(nameof(Get), new { id = createdReservationId },null);
     }
 
+    //CREATE - CLEANING
+    [HttpPost("clean")]
+    public async Task<ActionResult> Post(ReserveParkingSpotForCleaning command)
+    {
+        await reservationsService.ReserveForCleaningAsync(command);
+        return Ok();
+    }
+    
     //UPDATE LICENSE PLATE
     [HttpPut("{id:guid}")]
     public async Task<ActionResult> Put(Guid id,UpdateLicensePlate command)

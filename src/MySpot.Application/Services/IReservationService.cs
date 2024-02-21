@@ -10,7 +10,8 @@ public interface IReservationService
 
     Task<ReservationDto?> GetAsync(ReservationId id);
     Task<IEnumerable<ReservationDto>> GetAllWeeklyAsync();
-    Task<Guid?> CreateAsync(CreateReservation command);
+    Task<Guid?> ReserveForVehicleAsync(ReserveParkingSpotForVehicle command);
+    Task ReserveForCleaningAsync(ReserveParkingSpotForCleaning command);
     Task<bool> UpdateLicensePlateAsync(UpdateLicensePlate command);
     Task<bool> DeleteReservationAsync(CancelReservation command);
 }

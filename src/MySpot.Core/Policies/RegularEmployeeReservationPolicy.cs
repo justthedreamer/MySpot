@@ -12,6 +12,7 @@ internal sealed class RegularEmployeeReservationPolicy(IClock clock) : IReservat
     {
         var totalEmployeeReservation = weeklyParkingSpots
             .SelectMany(x => x.Reservations)
+            .OfType<VehicleReservation>()
             .Count(r => r.EmployeeName == employeeName);
 
         return totalEmployeeReservation < 2 && (clock.Current().Hour > 4);

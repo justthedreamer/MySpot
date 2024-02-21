@@ -20,10 +20,9 @@ internal sealed class ReservationConfiguration : IEntityTypeConfiguration<Reserv
         builder.Property(x => x.ParkingSpotId)
             .HasConversion(x => x.Value, guid => new ParkingSpotId(guid));
 
-        builder.Property(x => x.EmployeeName)
-            .HasConversion(x => x.Value, s => new EmployeeName(s));
-
-        builder.Property(x => x.LicencePlate)
-            .HasConversion(x => x.Value, s => new LicencePlate(s));
+        builder
+            .HasDiscriminator<string>("Type")
+            .HasValue<CleaningReservation>(nameof(CleaningReservation))
+            .HasValue<VehicleReservation>(nameof(VehicleReservation));
     }
 }

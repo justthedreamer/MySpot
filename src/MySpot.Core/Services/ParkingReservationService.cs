@@ -9,14 +9,14 @@ namespace MySpot.Core.Services;
 internal sealed class ParkingReservationService(IEnumerable<IReservationPolicy> policies, IClock clock)
     : IParkingReservationService
 {
-    private readonly IEnumerable<IReservationPolicy> _policies = policies;
-    private readonly IClock _clock = clock;
-
+    
+    public void ReserveSpotForCleaning(IEnumerable<WeeklyParkingSpot> allParkingSpots, JobTitle jobTitle, WeeklyParkingSpot parkingSpotToReserve,
+        VehicleReservation reservation){}
     public void ReserveSpotForVehicle(IEnumerable<WeeklyParkingSpot> allParkingSpots, JobTitle jobTitle, WeeklyParkingSpot parkingSpotToReserve,
-        Reservation reservation)
+        VehicleReservation reservation)
     {
         var parkingSpotId = parkingSpotToReserve.Id;
-        var policy = _policies.SingleOrDefault(x => x.CanBeApplied(jobTitle));
+        var policy = policies.SingleOrDefault(x => x.CanBeApplied(jobTitle));
 
         if (policy is null)
         {
@@ -28,6 +28,20 @@ internal sealed class ParkingReservationService(IEnumerable<IReservationPolicy> 
             throw new CannotReserveParkingSpotException(parkingSpotId);
         }
         
-        parkingSpotToReserve.AddReservation(reservation,new Date(_clock.Current()));
+        parkingSpotToReserve.AddReservation(reservation,new Date(clock.Current()));
+    }
+
+    public void ReserveParkingForCleaning(IEnumerable<WeeklyParkingSpot> allParkingSpots, Date date)
+    {
+        foreach (var parkingSpot in allParkingSpots)
+        {
+            var cleaningReservation = new CleaningReservation(new ReservationId(Guid.NewGuid()), parkingSpot.Id, date);
+
+            var reservations = parkingSpot.Reservations.Where(x => x.Date == date);
+            
+            parkingSpot.RemoveReservations(reservations);
+            
+            parkingSpot.AddReservation(cleaningReservation,new Date(clock.Current()));
+        }
     }
 }
