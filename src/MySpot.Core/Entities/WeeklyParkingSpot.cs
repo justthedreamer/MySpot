@@ -6,6 +6,10 @@ namespace MySpot.Core.Entities;
 public class WeeklyParkingSpot
 {
     private readonly HashSet<Reservation> _reservations = [];
+    public ParkingSpotId Id { get; private set; }
+    public Week Week { get; private set; }
+    public ParkingSpotName Name { get; private set; }
+    public IEnumerable<Reservation> Reservations => _reservations;
 
     public WeeklyParkingSpot()
     {
@@ -16,13 +20,8 @@ public class WeeklyParkingSpot
         Week = week;
         Name = name;
     }
-
-    public ParkingSpotId Id { get; private set; }
-    public Week Week { get; private set; }
-    public ParkingSpotName Name { get; private set; }
-    public IEnumerable<Reservation> Reservations => _reservations;
-
-    public void AddReservation(Reservation reservation, Date now)
+    
+    internal void AddReservation(Reservation reservation, Date now)
     {
         var isReservationDateValid = 
             reservation.Date  >= Week.From && 

@@ -16,7 +16,10 @@ internal class PostgresWeeklyParkingSpotRepository(MySpotDbContext dbContext) : 
         await dbContext.WeeklyParkingSpots
             .Include(x => x.Reservations)
             .SingleOrDefaultAsync(x => x.Id == id);
-
+    public async Task<IEnumerable<WeeklyParkingSpot>> GetByWeekAsync(Week week) =>
+        await dbContext.WeeklyParkingSpots.Where(x => x.Week == week)
+            .Include(x => x.Reservations)
+            .ToListAsync();
     public async Task AddAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
         await dbContext.AddAsync(weeklyParkingSpot);
