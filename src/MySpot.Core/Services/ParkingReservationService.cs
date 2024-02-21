@@ -1,9 +1,11 @@
+using System.Runtime.CompilerServices;
 using MySpot.Core.Abstractions;
 using MySpot.Core.Entities;
 using MySpot.Core.Exceptions;
 using MySpot.Core.Policies;
 using MySpot.Core.ValueObjects;
 
+[assembly: InternalsVisibleTo("MySpot.test.unit")]
 namespace MySpot.Core.Services;
 
 internal sealed class ParkingReservationService(IEnumerable<IReservationPolicy> policies, IClock clock)
@@ -30,7 +32,6 @@ internal sealed class ParkingReservationService(IEnumerable<IReservationPolicy> 
         
         parkingSpotToReserve.AddReservation(reservation,new Date(clock.Current()));
     }
-
     public void ReserveParkingForCleaning(IEnumerable<WeeklyParkingSpot> allParkingSpots, Date date)
     {
         foreach (var parkingSpot in allParkingSpots)

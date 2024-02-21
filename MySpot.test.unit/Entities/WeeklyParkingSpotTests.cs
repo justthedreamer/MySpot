@@ -12,11 +12,11 @@ public class WeeklyParkingSpotTests
     [Theory]
     [InlineData("2024-02-11")]
     [InlineData("2024-02-18")]
-    public void given_invalid_date_add_reservation_should_fail(string dateString)
+    public void given_invalid_date_add_for_vehicle_reservation_should_fail(string dateString)
     {
      // ARRANGE
      var invalidDate = DateTimeOffset.Parse(dateString);
-     var reservation = new Reservation(Guid.NewGuid(),_weeklyParkingSpot.Id, "John doe", "KLI0021", invalidDate);
+     var reservation = new VehicleReservation(Guid.NewGuid(),_weeklyParkingSpot.Id, "John doe", "KLI0021", invalidDate);
      
      // ACT
      var exception = Record.Exception(() => _weeklyParkingSpot.AddReservation(reservation,new Date(_now))) ;
@@ -32,7 +32,7 @@ public class WeeklyParkingSpotTests
         // ARRANGE
         var reservationDate = _now.AddDays(1);
         var reservation =
-            new Reservation(Guid.NewGuid(), _weeklyParkingSpot.Id, "John Doe", "XYZ123", reservationDate);
+            new VehicleReservation(Guid.NewGuid(), _weeklyParkingSpot.Id, "John Doe", "XYZ123", reservationDate);
         _weeklyParkingSpot.AddReservation(reservation,new Date(_now));
         // ACT
         var exception = Record.Exception(() => _weeklyParkingSpot.AddReservation(reservation,new Date(_now))) ;
@@ -48,7 +48,7 @@ public class WeeklyParkingSpotTests
         // ARRANGE
         var reservationDate = _now.AddDays(1);
         var reservation =
-            new Reservation(Guid.NewGuid(), _weeklyParkingSpot.Id, "John Doe", "XYZ123", reservationDate);
+            new VehicleReservation(Guid.NewGuid(), _weeklyParkingSpot.Id, "John Doe", "XYZ123", reservationDate);
         // ACT
         _weeklyParkingSpot.AddReservation(reservation,new Date(_now));
         // ASSERT

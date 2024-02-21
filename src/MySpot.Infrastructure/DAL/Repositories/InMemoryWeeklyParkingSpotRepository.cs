@@ -24,12 +24,14 @@ internal class InMemoryWeeklyParkingSpotRepository(IClock clock) : IWeeklyParkin
     public Task<WeeklyParkingSpot?> GetAsync(ParkingSpotId id) =>
         Task.FromResult(_weeklyParkingSpots.SingleOrDefault(x => x.Id == id));
 
+    public Task<IEnumerable<WeeklyParkingSpot>> GetByWeekAsync(Week week) => Task.FromResult(_weeklyParkingSpots.Where(x => x.Week == week));
+
     public Task AddAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
         _weeklyParkingSpots.Add(weeklyParkingSpot);
         return Task.CompletedTask;
     }
-
+    
     public Task UpdateAsync(WeeklyParkingSpot weeklyParkingSpot) => Task.CompletedTask;
 
     public Task DeleteAsync(WeeklyParkingSpot weeklyParkingSpot)
