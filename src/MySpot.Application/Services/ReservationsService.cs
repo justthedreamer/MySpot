@@ -41,7 +41,7 @@ public class ReservationsService(IClock clock, IWeeklyParkingSpotRepository week
             return default!;
         }
         
-        var reservation = new VehicleReservation(command.ReservationId, command.ParkingSpotId, command.Date,command.EmployeeName,command.LicensePlate);
+        var reservation = new VehicleReservation(command.ReservationId, command.ParkingSpotId,command.EmployeeName,command.LicensePlate,command.Date);
         
         //TODO jobtitle
         parkingReservationService.ReserveSpotForVehicle(weeklyParkingSpots,JobTitle.Employee,parkingSpotToReserve,reservation);
