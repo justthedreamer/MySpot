@@ -7,12 +7,14 @@ public abstract class Reservation
     public ReservationId Id { get; private set; }
     public ParkingSpotId ParkingSpotId { get; private set; }
     public Date Date { get; private set; }
-    protected Reservation(ReservationId id, ParkingSpotId parkingSpotId, Date date)
+    public Capacity Capacity { get; private set; }
+    
+    protected Reservation(ReservationId id, ParkingSpotId parkingSpotId, Date date,Capacity capacity)
     {
         Id = id;
         ParkingSpotId = parkingSpotId;
         Date = date;
+        Capacity = capacity;
     }
-
     protected Reservation(){ }
 }
