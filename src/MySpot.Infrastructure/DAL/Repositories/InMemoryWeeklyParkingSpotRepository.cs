@@ -12,11 +12,11 @@ internal class InMemoryWeeklyParkingSpotRepository(IClock clock) : IWeeklyParkin
 
     private readonly List<WeeklyParkingSpot> _weeklyParkingSpots =
     [
-        new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000001"),new Week(clock.Current()), "P1"),
-        new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000002"),new Week(clock.Current()), "P1"),
-        new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000003"),new Week(clock.Current()), "P1"),
-        new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000004"),new Week(clock.Current()), "P1"),
-        new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000005"),new Week(clock.Current()), "P1"),
+        WeeklyParkingSpot.Create(Guid.Parse("00000000-0000-0000-0000-000000000001"),new Week(clock.Current()), "P1"), 
+        WeeklyParkingSpot.Create(Guid.Parse("00000000-0000-0000-0000-000000000002"),new Week(clock.Current()), "P1"),
+        WeeklyParkingSpot.Create(Guid.Parse("00000000-0000-0000-0000-000000000003"),new Week(clock.Current()), "P1"),
+        WeeklyParkingSpot.Create(Guid.Parse("00000000-0000-0000-0000-000000000004"),new Week(clock.Current()), "P1"),
+        WeeklyParkingSpot.Create(Guid.Parse("00000000-0000-0000-0000-000000000005"),new Week(clock.Current()), "P1"),
     ];
 
     public Task<IEnumerable<WeeklyParkingSpot>> GetAllAsync() => Task.FromResult(_weeklyParkingSpots.AsEnumerable());
