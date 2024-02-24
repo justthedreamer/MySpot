@@ -9,7 +9,7 @@ public sealed class VehicleReservation : Reservation
 
 
     private VehicleReservation(){}
-    public VehicleReservation(ReservationId id, ParkingSpotId parkingSpotId, EmployeeName employeeName, LicencePlate licencePlate,Date date) : base(id, parkingSpotId, date)
+    public VehicleReservation(ReservationId id, ParkingSpotId parkingSpotId, EmployeeName employeeName, LicencePlate licencePlate,Date date,Capacity capacity) : base(id, parkingSpotId, date,capacity)
     {
         EmployeeName = employeeName;
         LicencePlate = licencePlate;
