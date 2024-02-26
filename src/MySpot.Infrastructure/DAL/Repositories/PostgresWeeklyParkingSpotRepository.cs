@@ -30,17 +30,16 @@ internal class PostgresWeeklyParkingSpotRepository(MySpotDbContext dbContext) : 
     public async Task AddAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
         await dbContext.AddAsync(weeklyParkingSpot);
-        await Commit();
     }
-    public async Task UpdateAsync(WeeklyParkingSpot weeklyParkingSpot)
+    public Task UpdateAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
         dbContext.Update(weeklyParkingSpot);
-        await Commit();
+        return Task.CompletedTask;
     }
-    public async Task DeleteAsync(WeeklyParkingSpot weeklyParkingSpot)
+    public Task DeleteAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
         dbContext.Remove(weeklyParkingSpot);
-        await Commit();
+        return Task.CompletedTask;
     }
     public async Task Commit() => await dbContext.SaveChangesAsync();
 }
