@@ -2,4 +2,4 @@ using MySpot.Application.Abstractions;
 
 namespace MySpot.Application.Commands;
 
-public sealed record ReserveParkingSpotForCleaning(DateTime Date) : ICommand;
+public record DeleteReservation(Guid ReservationId) : ICommand;
