@@ -12,8 +12,6 @@ internal sealed class ParkingReservationService(IEnumerable<IReservationPolicy> 
     : IParkingReservationService
 {
     
-    public void ReserveSpotForCleaning(IEnumerable<WeeklyParkingSpot> allParkingSpots, JobTitle jobTitle, WeeklyParkingSpot parkingSpotToReserve,
-        VehicleReservation reservation){}
     public void ReserveSpotForVehicle(IEnumerable<WeeklyParkingSpot> allParkingSpots, JobTitle jobTitle, WeeklyParkingSpot parkingSpotToReserve,
         VehicleReservation reservation)
     {
