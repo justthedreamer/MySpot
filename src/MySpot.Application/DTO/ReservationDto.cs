@@ -1,9 +1,5 @@
 namespace MySpot.Application.DTO;
 
-public class ReservationDto
+public sealed record ReservationDto(Guid Id, Guid ParkingSpotId, string EmployeeName, string Type, DateTime Date)
 {
-    public Guid Id { get; set; }
-    public Guid ParkingSpotId { get; set; }
-    public string EmployeeName { get; set; }
-    public DateTime Date { get; set; }
 }
