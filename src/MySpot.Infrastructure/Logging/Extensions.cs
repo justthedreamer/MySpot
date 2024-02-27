@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using MySpot.Application.Abstractions;
 using MySpot.Infrastructure.Logging.Decorators;
 using Serilog;

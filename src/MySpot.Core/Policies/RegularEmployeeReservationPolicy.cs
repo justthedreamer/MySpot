@@ -6,7 +6,10 @@ namespace MySpot.Core.Policies;
 
 internal sealed class RegularEmployeeReservationPolicy(IClock clock) : IReservationPolicy
 {
-    public bool CanBeApplied(JobTitle jobTitle) => (jobTitle == JobTitle.Employee);
+    public bool CanBeApplied(JobTitle jobTitle)
+    {
+        return jobTitle == JobTitle.Employee;
+    }
 
     public bool CanReserve(IEnumerable<WeeklyParkingSpot> weeklyParkingSpots, EmployeeName employeeName)
     {
@@ -15,6 +18,6 @@ internal sealed class RegularEmployeeReservationPolicy(IClock clock) : IReservat
             .OfType<VehicleReservation>()
             .Count(r => r.EmployeeName == employeeName);
 
-        return totalEmployeeReservation < 2 && (clock.Current().Hour > 4);
+        return totalEmployeeReservation < 2 && clock.Current().Hour > 4;
     }
 }

@@ -1,5 +1,3 @@
-using System.Security.AccessControl;
-
 namespace MySpot.Application.DTO;
 
 public sealed record WeeklyParkingSpotDto(
@@ -9,5 +7,5 @@ public sealed record WeeklyParkingSpotDto(
     DateTime To,
     int Capacity,
     IEnumerable<ReservationDto> Reservations)
-    {
+{
 }

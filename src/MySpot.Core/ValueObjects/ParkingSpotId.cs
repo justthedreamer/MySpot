@@ -4,25 +4,32 @@ namespace MySpot.Core.ValueObjects;
 
 public sealed record ParkingSpotId
 {
-    public Guid Value { get; }
-
     public ParkingSpotId(Guid value)
     {
-        if (value == Guid.Empty)
-        {
-            throw new InvalidEntityIdException(value);
-        }
+        if (value == Guid.Empty) throw new InvalidEntityIdException(value);
 
         Value = value;
     }
 
-    public static ParkingSpotId Create() => new(Guid.NewGuid());
+    public Guid Value { get; }
+
+    public static ParkingSpotId Create()
+    {
+        return new ParkingSpotId(Guid.NewGuid());
+    }
 
     public static implicit operator Guid(ParkingSpotId date)
-        => date.Value;
-    
-    public static implicit operator ParkingSpotId(Guid value)
-        => new(value);
+    {
+        return date.Value;
+    }
 
-    public override string ToString() => Value.ToString("N");
+    public static implicit operator ParkingSpotId(Guid value)
+    {
+        return new ParkingSpotId(value);
+    }
+
+    public override string ToString()
+    {
+        return Value.ToString("N");
+    }
 }
