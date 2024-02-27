@@ -11,6 +11,7 @@ using MySpot.Infrastructure.Security;
 using MySpot.Infrastructure.Time;
 
 [assembly: InternalsVisibleTo("MySpot.test.unit")]
+
 namespace MySpot.Infrastructure;
 
 public static class Extensions
@@ -21,9 +22,10 @@ public static class Extensions
         services.AddPostgres(configuration);
         services.AddSingleton<ExceptionMiddleware>();
         services.AddCustomLogging();
+        services.AddSecurity();
         
         var infrastructureAssembly = typeof(AppOption).Assembly;
-        
+
         services
             .Scan(s => s.FromAssemblies(infrastructureAssembly)
                 .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
@@ -32,6 +34,7 @@ public static class Extensions
 
         return services;
     }
+
     public static WebApplication UseInfrastructure(this WebApplication app)
     {
         app.UseMiddleware<ExceptionMiddleware>();
