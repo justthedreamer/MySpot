@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using MySpot.Application.Abstractions;
 using MySpot.Core.Abstractions;
 using MySpot.Infrastructure.Auth;
@@ -22,7 +23,6 @@ public static class Extensions
         services.AddSingleton<IClock, Clock>();
         services.AddPostgres(configuration);
         services.AddSingleton<ExceptionMiddleware>();
-        services.AddCustomLogging();
         services.AddSecurity();
         services.AddAuth(configuration);
         services.AddHttpContextAccessor();
@@ -35,12 +35,31 @@ public static class Extensions
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
+        services.AddCustomLogging();
+        services.AddSwaggerGen(swagger =>
+        {
+            swagger.EnableAnnotations();
+            swagger.SwaggerDoc("v1",new OpenApiInfo()
+            {
+                Title = "MySpot API",
+                Version = "v1"
+            });
+        });
+        services.AddEndpointsApiExplorer();
+        
         return services;
     }
 
     public static WebApplication UseInfrastructure(this WebApplication app)
     {
         app.UseMiddleware<ExceptionMiddleware>();
+        app.UseSwagger();
+        app.UseReDoc(reDoc =>
+        {
+            reDoc.DocumentTitle = "MySpot API";
+            reDoc.RoutePrefix = "docs";
+            reDoc.SpecUrl("/swagger/v1/swagger.json");
+        });
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
