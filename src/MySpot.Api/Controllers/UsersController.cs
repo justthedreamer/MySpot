@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySpot.Application.Abstractions;
 using MySpot.Application.Commands;
 using MySpot.Application.DTO;
 using MySpot.Application.Queries;
+using MySpot.Application.Security;
 
 namespace MySpot.Api.Controllers;
 
@@ -11,12 +14,15 @@ namespace MySpot.Api.Controllers;
 public class UsersController(
     ICommandHandler<SignUp> signUpHandler,
     IQueryHandler<GetUsers, IEnumerable<UserDto>> getUsersHandler,
-    IQueryHandler<GetUser, UserDto> getUserHandler) : ControllerBase
+    IQueryHandler<GetUser, UserDto> getUserHandler,
+    ICommandHandler<SignIn> signInHandler,
+    ITokenStorage tokenStorage) : ControllerBase
 {
+    
     [HttpGet]
-    public async Task<IEnumerable<UserDto>> Get()
+    public async Task<IEnumerable<UserDto>> Get([FromBody] GetUsers command)
     {
-        return await getUsersHandler.HandleAsync(new GetUsers());
+        return await getUsersHandler.HandleAsync(command);
     }
 
     [HttpGet("{id:guid}")]
@@ -32,5 +38,13 @@ public class UsersController(
         command = command with { userId = id };
         await signUpHandler.HandleAsync(command);
         return NoContent();
+    }
+
+    [HttpPost("sign-in")]
+    public async Task<ActionResult<JwtDto>> Post(SignIn command)
+    {
+        await signInHandler.HandleAsync(command);
+        var jwt = tokenStorage.Get();
+        return Ok(jwt);
     }
 }
