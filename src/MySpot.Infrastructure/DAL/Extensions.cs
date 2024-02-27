@@ -12,7 +12,7 @@ internal static class Extensions
 {
     private const string SectionName = "postgres";
 
-    public static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
+    internal static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
     {
         var options = GetOptions<PostgresOptions>(configuration, SectionName);
 
@@ -31,7 +31,7 @@ internal static class Extensions
         return services;
     }
 
-    private static T GetOptions<T>(this IConfiguration configuration, string sectionName) where T : class, new()
+    public static T GetOptions<T>(this IConfiguration configuration, string sectionName) where T : class, new()
     {
         var options = new T();
         var section = configuration.GetSection(sectionName);
