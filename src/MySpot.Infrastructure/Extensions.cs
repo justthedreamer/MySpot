@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySpot.Application.Abstractions;
 using MySpot.Core.Abstractions;
+using MySpot.Infrastructure.Auth;
 using MySpot.Infrastructure.DAL;
 using MySpot.Infrastructure.Exceptions;
 using MySpot.Infrastructure.Logging;
@@ -23,6 +24,8 @@ public static class Extensions
         services.AddSingleton<ExceptionMiddleware>();
         services.AddCustomLogging();
         services.AddSecurity();
+        services.AddAuth(configuration);
+        services.AddHttpContextAccessor();
         
         var infrastructureAssembly = typeof(AppOption).Assembly;
 
@@ -38,6 +41,9 @@ public static class Extensions
     public static WebApplication UseInfrastructure(this WebApplication app)
     {
         app.UseMiddleware<ExceptionMiddleware>();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapControllers();
         return app;
     }
 }

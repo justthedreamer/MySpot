@@ -1,27 +1,81 @@
 @url = http://localhost:5000
-@reservationId = 39c71693-c80b-4691-93ea-a4a5052b903e
+@reservationId = fb7c6dd9-3165-4aeb-9458-f047f1aaf61f
 
 @parkingSpotId1 = 00000000-0000-0000-0000-000000000001
+
+
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNzZiOWVkMy04OGQ4LTQxNjAtOTZjZS0yYTg2NWQ5YTQxMWMiLCJ1bmlxdWVfbmFtZSI6IjM3NmI5ZWQzLTg4ZDgtNDE2MC05NmNlLTJhODY1ZDlhNDExYyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6InVzZXIiLCJuYmYiOjE3MDkwMTgwOTEsImV4cCI6MTcwOTAyMTY5MSwiaXNzIjoibXlzcG90LWlzc3VlciIsImF1ZCI6Im15c3BvdC1hdWRpZW5jZSJ9.0qJgYNAYLeBO2j9eK9wZj84RK2MHNAxg2B8wo1VI6us
+
+###
+GET {{url}}/users/me
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/users/jwt
+
+###
+GET {{url}}/users
+
+###
+POST {{url}}/users
+Content-Type: application/json
+
+{
+    "email": "user2@myspo.io",
+    "username" : "user2",
+    "password" : "secretx",
+    "fullname" : "John Doe",
+    "role" : "user"
+}
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "user2@myspo.io",
+    "username" : "user2",
+    "password" : "secretx"
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
 
 ###
 GET {{url}}
 
 ###
-GET {{url}}/reservations
+GET {{url}}/parking-spots
 
 ###
 GET {{url}}/reservations/{{reservationId}}
 
 ### 
-POST  {{url}}/reservations/vehicle
+POST  {{url}}/parking-spots/{{parkingSpotId1}}/reservations/vehicle
 Content-Type: application/json
 
 {
     "ParkingSpotId": "{{parkingSpotId1}}",
     "EmployeeName" : "John Doe",
     "LicensePlate" : "KLI0123",
-    "Date" : "2024-02-23"
+    "Date" : "2024-02-23",
+    "Capacity" : 1
 }
+
+### 
+POST  {{url}}/parking-spots/reservations/cleaning
+Content-Type: application/json
+
+{
+    "ParkingSpotId": "{{parkingSpotId1}}",
+    "EmployeeName" : "John Krasinski",
+    "LicensePlate" : "KLI0123",
+    "Date" : "2024-02-27",
+    "Capacity" : 1
+}
+
 ### 
 POST  {{url}}/reservations/clean
 Content-Type: application/json
