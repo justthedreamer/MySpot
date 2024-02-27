@@ -18,17 +18,50 @@ public class UsersController(
     ICommandHandler<SignIn> signInHandler,
     ITokenStorage tokenStorage) : ControllerBase
 {
+    [HttpGet("me")]
+    [Authorize]
+    public async Task<ActionResult<UserDto>> Get()
+    {
+        if (string.IsNullOrWhiteSpace(HttpContext.User.Identity?.Name))
+        {
+            return NotFound();
+        }
+
+        var userId = Guid.Parse(HttpContext.User.Identity.Name);
+        var user = await getUserHandler.HandleAsync(new GetUser() { UserId = userId });
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        return user;
+    }
     
     [HttpGet]
-    public async Task<IEnumerable<UserDto>> Get([FromBody] GetUsers command)
+    [Authorize(Policy = "is-admin")]
+    public async Task<ActionResult<IEnumerable<UserDto>>> Get([FromBody] GetUsers command)
     {
-        return await getUsersHandler.HandleAsync(command);
+        if (!HttpContext.User.IsInRole("admin"))
+        {
+            return Forbid();
+        }
+        
+        var users = await getUsersHandler.HandleAsync(command);
+
+        return Ok(users);
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Policy = "is-admin")]
     public async Task<ActionResult<UserDto>> Get(Guid id)
     {
-        return await getUserHandler.HandleAsync(new GetUser { UserId = id });
+        var user = await getUserHandler.HandleAsync(new GetUser { UserId = id });
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        return user;
     }
 
     [HttpPost]
