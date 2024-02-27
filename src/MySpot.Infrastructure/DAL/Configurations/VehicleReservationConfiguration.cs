@@ -13,6 +13,6 @@ internal sealed class VehicleReservationConfiguration : IEntityTypeConfiguration
             .HasConversion(x => x.Value, s => new EmployeeName(s));
 
         builder.Property(x => x.LicencePlate)
-            .HasConversion(x => x.Value, s => new LicencePlate(s));    
+            .HasConversion(x => x.Value, s => new LicencePlate(s));
     }
 }

@@ -8,6 +8,5 @@ internal sealed class CleaningReservationConfiguration : IEntityTypeConfiguratio
 {
     public void Configure(EntityTypeBuilder<CleaningReservation> builder)
     {
-            
     }
 }

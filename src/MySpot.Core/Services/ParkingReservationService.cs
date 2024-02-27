@@ -6,30 +6,27 @@ using MySpot.Core.Policies;
 using MySpot.Core.ValueObjects;
 
 [assembly: InternalsVisibleTo("MySpot.test.unit")]
+
 namespace MySpot.Core.Services;
 
 internal sealed class ParkingReservationService(IEnumerable<IReservationPolicy> policies, IClock clock)
     : IParkingReservationService
 {
-    
-    public void ReserveSpotForVehicle(IEnumerable<WeeklyParkingSpot> allParkingSpots, JobTitle jobTitle, WeeklyParkingSpot parkingSpotToReserve,
+    public void ReserveSpotForVehicle(IEnumerable<WeeklyParkingSpot> allParkingSpots, JobTitle jobTitle,
+        WeeklyParkingSpot parkingSpotToReserve,
         VehicleReservation reservation)
     {
         var parkingSpotId = parkingSpotToReserve.Id;
         var policy = policies.SingleOrDefault(x => x.CanBeApplied(jobTitle));
 
-        if (policy is null)
-        {
-            throw new NoReservationPolicyFoundException(jobTitle);
-        }
+        if (policy is null) throw new NoReservationPolicyFoundException(jobTitle);
 
-        if (!policy.CanReserve(allParkingSpots,reservation.EmployeeName))
-        {
+        if (!policy.CanReserve(allParkingSpots, reservation.EmployeeName))
             throw new CannotReserveParkingSpotException(parkingSpotId);
-        }
-        
-        parkingSpotToReserve.AddReservation(reservation,new Date(clock.Current()));
+
+        parkingSpotToReserve.AddReservation(reservation, new Date(clock.Current()));
     }
+
     public void ReserveParkingForCleaning(IEnumerable<WeeklyParkingSpot> allParkingSpots, Date date)
     {
         foreach (var parkingSpot in allParkingSpots)
@@ -37,10 +34,10 @@ internal sealed class ParkingReservationService(IEnumerable<IReservationPolicy> 
             var cleaningReservation = new CleaningReservation(new ReservationId(Guid.NewGuid()), parkingSpot.Id, date);
 
             var reservations = parkingSpot.Reservations.Where(x => x.Date == date);
-            
+
             parkingSpot.RemoveReservations(reservations);
-            
-            parkingSpot.AddReservation(cleaningReservation,new Date(clock.Current()));
+
+            parkingSpot.AddReservation(cleaningReservation, new Date(clock.Current()));
         }
     }
 }

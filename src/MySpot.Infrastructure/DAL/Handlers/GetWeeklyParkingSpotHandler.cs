@@ -6,21 +6,19 @@ using MySpot.Application.Queries;
 
 namespace MySpot.Infrastructure.DAL.Handlers;
 
-internal sealed class GetWeeklyParkingSpotHandler(MySpotDbContext dbContext) : IQueryHandler<GetWeeklyParkingSpot,WeeklyParkingSpotDto>
+internal sealed class GetWeeklyParkingSpotHandler(MySpotDbContext dbContext)
+    : IQueryHandler<GetWeeklyParkingSpot, WeeklyParkingSpotDto>
 {
     public async Task<WeeklyParkingSpotDto> HandleAsync(GetWeeklyParkingSpot query)
     {
-        var weeklyParkingSpot = 
+        var weeklyParkingSpot =
             await dbContext
                 .WeeklyParkingSpots
                 .Include(x => x.Reservations)
                 .SingleOrDefaultAsync(x => x.Id.Value == query.Id);
 
-        if (weeklyParkingSpot == null)
-        {
-            throw new WeeklyParkingSpotNotFoundException(query.Id);
-        }
-        
+        if (weeklyParkingSpot == null) throw new WeeklyParkingSpotNotFoundException(query.Id);
+
         return weeklyParkingSpot.GetDto();
     }
 }

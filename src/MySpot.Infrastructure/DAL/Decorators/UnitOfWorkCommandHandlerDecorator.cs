@@ -1,8 +1,4 @@
-using System.Diagnostics;
-using Humanizer;
-using Microsoft.Extensions.Logging;
 using MySpot.Application.Abstractions;
-using MySpot.Application.Commands;
 
 namespace MySpot.Infrastructure.DAL.Decorators;
 

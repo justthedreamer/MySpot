@@ -15,7 +15,7 @@ internal sealed class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger) :
         }
         catch (Exception exception)
         {
-            logger.LogError(exception,exception.Message);
+            logger.LogError(exception, exception.Message);
             await HandleExceptionAsync(exception, context);
         }
     }
@@ -26,7 +26,7 @@ internal sealed class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger) :
         {
             CustomException => (StatusCodes.Status400BadRequest,
                 new Error(exception.GetType().Name.Underscore().Replace("_exception", ""), exception.Message)),
-            _ => (StatusCodes.Status500InternalServerError, new Error("error","There was an error.") )
+            _ => (StatusCodes.Status500InternalServerError, new Error("error", "There was an error."))
         };
 
         context.Response.StatusCode = statusCode;

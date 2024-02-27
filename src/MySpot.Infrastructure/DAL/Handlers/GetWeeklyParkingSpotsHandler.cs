@@ -1,7 +1,4 @@
-using Humanizer;
-using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using MySpot.Application.Abstractions;
 using MySpot.Application.DTO;
 using MySpot.Application.Queries;
