@@ -17,14 +17,16 @@ internal sealed class LoggingCommandHandlerDecorator<TCommand> : ICommandHandler
         _commandHandler = commandHandler;
         _logger = logger;
     }
+
     public async Task HandleAsync(TCommand command)
     {
         var commandName = typeof(TCommand).Name.Underscore();
         var stopwatch = new Stopwatch();
         stopwatch.Start();
-        _logger.LogInformation("Started handling a command: {commandName}...",commandName);
+        _logger.LogInformation("Started handling a command: {commandName}...", commandName);
         await _commandHandler.HandleAsync(command);
         stopwatch.Stop();
-        _logger.LogInformation("Complete handling a command : {commandName} in {Elapsed}",commandName,stopwatch.Elapsed);
+        _logger.LogInformation("Complete handling a command : {commandName} in {Elapsed}", commandName,
+            stopwatch.Elapsed);
     }
 }
