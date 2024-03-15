@@ -14,14 +14,14 @@ internal static class Extensions
 
     internal static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
     {
-        var options = GetOptions<PostgresOptions>(configuration, SectionName);
+        var options = configuration.GetOptions<PostgresOptions>(SectionName);
 
 
         services.AddDbContext<MySpotDbContext>(x =>
                 x.UseNpgsql(options.ConnectionString)
             )
             .AddScoped<IWeeklyParkingSpotRepository, PostgresWeeklyParkingSpotRepository>()
-            .AddScoped<IUserRepository,PostgresUserRepository>()
+            .AddScoped<IUserRepository, PostgresUserRepository>()
             .AddScoped<IUnitOfWork, PostgresUnitOfWork>();
         services.TryDecorate(typeof(ICommandHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
 
@@ -31,12 +31,4 @@ internal static class Extensions
         return services;
     }
 
-    public static T GetOptions<T>(this IConfiguration configuration, string sectionName) where T : class, new()
-    {
-        var options = new T();
-        var section = configuration.GetSection(sectionName);
-        section.Bind(options);
-
-        return options;
-    }
 }

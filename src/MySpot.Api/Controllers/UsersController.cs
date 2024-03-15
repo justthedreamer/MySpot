@@ -66,7 +66,6 @@ public class UsersController(
         {
             return NotFound();
         }
-
         return user;
     }
 
@@ -76,7 +75,7 @@ public class UsersController(
         var id = Guid.NewGuid();
         command = command with { userId = id };
         await signUpHandler.HandleAsync(command);
-        return NoContent();
+        return CreatedAtAction(nameof(Get), new {command.userId},null);
     }
 
     [HttpPost("sign-in")]

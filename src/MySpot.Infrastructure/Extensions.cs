@@ -20,6 +20,8 @@ public static class Extensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddControllers();
+        services.Configure<AppOption>(configuration.GetRequiredSection("app"));
         services.AddSingleton<IClock, Clock>();
         services.AddPostgres(configuration);
         services.AddSingleton<ExceptionMiddleware>();
@@ -64,5 +66,14 @@ public static class Extensions
         app.UseAuthorization();
         app.MapControllers();
         return app;
+    }
+    
+    public static T GetOptions<T>(this IConfiguration configuration, string sectionName) where T : class, new()
+    {
+        var options = new T();
+        var section = configuration.GetSection(sectionName);
+        section.Bind(options);
+
+        return options;
     }
 }
