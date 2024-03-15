@@ -15,17 +15,18 @@ GET {{url}}/users/jwt
 
 ###
 GET {{url}}/users
+Authorization: Bearer {{accessToken}}
 
 ###
 POST {{url}}/users
 Content-Type: application/json
 
 {
-    "email": "user2@myspo.io",
-    "username" : "user2",
+    "email": "user3@myspo.io",
+    "username" : "user3",
     "password" : "secretx",
     "fullname" : "John Doe",
-    "role" : "user"
+    "role" : "admin"
 }
 
 ###
@@ -34,8 +35,8 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "user2@myspo.io",
-    "username" : "user2",
+    "email": "user3@myspo.io",
+    "username" : "user3",
     "password" : "secretx"
 }
 
